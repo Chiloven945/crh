@@ -1,5 +1,7 @@
 {
   "fus.message.pipelowertwo": "§cThe fluid pipe has at least two openings!",
-  "fus.message.altdownwithwrench": "§aPress [Alt] will enable chain exposing",
-  "fus.message.altdownwithcasing": "§aPress [Alt] will enable chain encasing"
+  "fus.message.altdownwithwrench": "§aPressing will enable chain exposing",
+  "fus.message.altdownwithcasing": "§aPressing will enable chain encasing",
+  "key.crh.encasing": "Chain Encasing",
+  "key.categories.crh.encasing": "Create: Right Hand"
 }

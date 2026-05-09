@@ -1,20 +1,23 @@
-package top.fus_lingx.crh.crh;
+package top.fus_lingx.crh.crh.client.input;
 
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
-public class AltDown{
-    private static boolean altDown = false;
-    public static int tick = 0;
+import static top.fus_lingx.crh.crh.client.input.RightClick.ENCASE_MAPPING;
+
+@OnlyIn(Dist.CLIENT)
+public class KeyDown {
+    public static boolean rightClickPressed = false;
 
     @SubscribeEvent
-    public static void TickEvent(PlayerTickEvent.Post event) {//按住alt提示（仅扳手和机壳生效
+    public static void TickEvent(PlayerTickEvent.Post event) {//按住按键提示（仅扳手和机壳生效
         Player player = event.getEntity();
-        boolean isAltDown = Screen.hasAltDown();
-        if (isAltDown && !altDown) {
+        rightClickPressed = false;
+        if (ENCASE_MAPPING.get().consumeClick()) {
             if(player.getMainHandItem().getItem().toString().equals("create:wrench")){
                 player.displayClientMessage(Component.translatable("fus.message.altdownwithwrench"), true);
             }
@@ -22,6 +25,5 @@ public class AltDown{
                 player.displayClientMessage(Component.translatable("fus.message.altdownwithcasing"), true);
             }
         }
-        altDown = isAltDown;
     }
 }
