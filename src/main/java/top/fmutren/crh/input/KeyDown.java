@@ -10,6 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.apache.logging.log4j.core.pattern.AbstractStyleNameConverter;
 import top.fmutren.crh.interaction.util.ChainKeyStateTracker;
 import top.fmutren.crh.interaction.util.PredicatesCreator;
 import top.fmutren.crh.network.ModMessages;
@@ -30,7 +31,19 @@ public final class KeyDown {
         syncChainKeyState(player);
 
         if (ENCASE_MAPPING.get().consumeClick()) {
-            player.displayClientMessage(messageForHeldItem(player), true);
+            String result = null;
+            ItemStack mainHand = player.getItemInHand(InteractionHand.MAIN_HAND);
+            ItemStack offHand = player.getItemInHand(InteractionHand.OFF_HAND);
+
+            if (isCreateWrench(mainHand) || isCreateWrench(offHand)) {
+                result = "crh.message.altdownwithwrench";
+            }
+
+            if (isCreateCasing(mainHand) || isCreateCasing(offHand)) {
+                result = "crh.message.altdownwithcasing";
+            }
+            if (result == null) return;
+            player.displayClientMessage(Component.translatable(result).withStyle(ChatFormatting.GREEN), true);
         }
     }
 
@@ -42,24 +55,6 @@ public final class KeyDown {
 
         PacketDistributor.sendToServer(new ModMessages.ChainKeyStatePayload(chainKeyDown));
         lastSentChainKeyState = chainKeyDown;
-    }
-
-    private static Component messageForHeldItem(Player player) {
-        ItemStack mainHand = player.getItemInHand(InteractionHand.MAIN_HAND);
-        ItemStack offHand = player.getItemInHand(InteractionHand.OFF_HAND);
-
-        if (isCreateWrench(mainHand) || isCreateWrench(offHand)) {
-            return Component.translatable("crh.message.altdownwithwrench")
-                    .withStyle(ChatFormatting.GREEN);
-        }
-
-        if (isCreateCasing(mainHand) || isCreateCasing(offHand)) {
-            return Component.translatable("crh.message.altdownwithcasing")
-                    .withStyle(ChatFormatting.GREEN);
-        }
-
-        return Component.translatable("crh.message.chainkey")
-                .withStyle(ChatFormatting.GREEN);
     }
 
     private static boolean isCreateWrench(ItemStack stack) {

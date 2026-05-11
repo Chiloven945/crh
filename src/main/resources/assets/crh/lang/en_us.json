@@ -1,6 +1,5 @@
 {
   "crh.message.pipelowerthantwo": "Fluid pipes must keep at least two openings!",
-  "crh.message.chainkey": "Hold to enable Create wrench/encasing chain operations",
   "crh.message.altdownwithwrench": "Hold to enable chain de-encasing",
   "crh.message.altdownwithcasing": "Hold to enable chain encasing",
   "key.crh.encasing": "Chain Encasing/Exposing",
