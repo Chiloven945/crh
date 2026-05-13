@@ -1,11 +1,9 @@
 package top.fmutren.crh.mixin;
 
 import com.simibubi.create.content.decoration.encasing.EncasableBlock;
-import com.simibubi.create.content.decoration.encasing.EncasedBlock;
 import com.simibubi.create.content.kinetics.simpleRelays.CogWheelBlock;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -13,12 +11,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static top.fmutren.crh.interaction.PlayerLookOnFace.getPlayerLookingFace;
+import static top.fmutren.crh.interaction.util.ChainOperation.centerHit;
 import static top.fmutren.crh.interaction.util.PredicatesCreator.isShaftCasing;
 
 @Mixin(CogWheelBlock.class)
@@ -39,10 +38,9 @@ public class CreateCogWheelBlockMixin {
         if (!(placer instanceof Player player)) return;
 
         ItemStack heldOffHandItem = player.getOffhandItem();
+        Direction face = getPlayerLookingFace(player);
 
-        HitResult hit = Minecraft.getInstance().hitResult;
-        if (hit.getType() != HitResult.Type.BLOCK) return;
-        BlockHitResult blockHit = (BlockHitResult) hit;
+        BlockHitResult blockHit = centerHit(pos, face);
 
         if(isShaftCasing(heldOffHandItem) && state.getBlock() instanceof EncasableBlock encasableBlock)
         {
