@@ -1,5 +1,6 @@
 package top.fmutren.crh;
 
+import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 public final class Config {
@@ -8,6 +9,8 @@ public final class Config {
     public static final ModConfigSpec.IntValue MAX_SHAFT_BLOCKS;
     public static final ModConfigSpec.IntValue MAX_BELT_BLOCKS;
     public static final ModConfigSpec.DoubleValue MAX_EMPTY_HAND_PIPE_REACH;
+    public static final ModConfigSpec.BooleanValue COMPAT_FTB_ULTIMINE;
+    public static final ModConfigSpec.BooleanValue DISABLE_BUILTIN_CHAIN_WHEN_FTB_ULTIMINE_ENABLED;
     public static final ModConfigSpec SPEC;
     public static final ModConfigSpec.BooleanValue ENABLE_VIEW;
     public static final ModConfigSpec.BooleanValue ENABLE_EMPTY_HAND_MODIFY_PIPE;
@@ -40,6 +43,14 @@ public final class Config {
                 .comment("Enable empty hand can modify pipe.")
                 .define("enableEmptyHandPipe", true);
 
+        COMPAT_FTB_ULTIMINE = BUILDER
+                .comment("Enable FTB Ultimine compatibility. When FTB Ultimine is installed, CRH will use Ultimine-selected blocks for chain operations.")
+                .define("compatFtbUltimine", true);
+
+        DISABLE_BUILTIN_CHAIN_WHEN_FTB_ULTIMINE_ENABLED = BUILDER
+                .comment("Disable CRH built-in chain selection when FTB Ultimine compatibility is active.")
+                .define("disableBuiltinChainWhenFtbUltimineCompatEnabled", true);
+
         BUILDER.pop();
         SPEC = BUILDER.build();
     }
@@ -69,6 +80,23 @@ public final class Config {
 
     public static boolean enableEmptyHandModifyPipe() {
         return ENABLE_EMPTY_HAND_MODIFY_PIPE.get();
+    }
+
+    public static boolean builtinChainAllowed() {
+        return !(ftbUltimineCompatActive()
+                && disableBuiltinChainWhenFtbUltimineCompatEnabled());
+    }
+
+    public static boolean ftbUltimineCompatActive() {
+        return compatFtbUltimine() && ModList.get().isLoaded("ftbultimine");
+    }
+
+    public static boolean disableBuiltinChainWhenFtbUltimineCompatEnabled() {
+        return DISABLE_BUILTIN_CHAIN_WHEN_FTB_ULTIMINE_ENABLED.get();
+    }
+
+    public static boolean compatFtbUltimine() {
+        return COMPAT_FTB_ULTIMINE.get();
     }
 
 }
