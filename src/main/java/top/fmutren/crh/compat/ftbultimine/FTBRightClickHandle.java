@@ -25,6 +25,7 @@ import top.fmutren.crh.interaction.util.PredicatesCreator;
 import static top.fmutren.crh.Crh.loadCreateCasing;
 import static top.fmutren.crh.interaction.StateSwitch.commonSwitchForHeldItem;
 import static top.fmutren.crh.interaction.util.ChainOperation.centerHit;
+import static top.fmutren.crh.interaction.util.PredicatesCreator.isEncasedShaft;
 
 
 public class FTBRightClickHandle {
@@ -70,7 +71,7 @@ public class FTBRightClickHandle {
                             }
                             count++;
                         }
-                        if (player.isShiftKeyDown()) returnItem(player, item, count);
+                        if (player.isShiftKeyDown()&& !isEncasedShaft(originState)) returnItem(player, item, count);
                     }
                     case 1, 2 -> {
                         if(player.isShiftKeyDown()) return 0;

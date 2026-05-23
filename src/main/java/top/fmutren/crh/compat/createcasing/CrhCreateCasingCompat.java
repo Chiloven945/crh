@@ -19,6 +19,7 @@ public class CrhCreateCasingCompat {
         if (CasingSets.INDUSTRIAL_IRON.getCasing().asItem().equals(itemStack.getItem())) return 1;
         if (CasingSets.REFINED_RADIANCE.getCasing().asItem().equals(itemStack.getItem())) return 1;
         if (CasingSets.COPPER.getCasing().asItem().equals(itemStack.getItem())) return 1;
+        if (CasingSets.RAILWAY.getCasing().asItem().equals(itemStack.getItem())) return 1;
         return -1;
     }
 
